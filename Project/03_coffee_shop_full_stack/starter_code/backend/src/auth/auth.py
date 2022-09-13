@@ -1,13 +1,13 @@
 import json
 from flask import request, _request_ctx_stack
 from functools import wraps
-from jose import jwt
+import jwt
 from urllib.request import urlopen
 
 
-AUTH0_DOMAIN = 'udacity-fsnd.auth0.com'
+AUTH0_DOMAIN = 'fsnd-imms.eu.auth0.com'
 ALGORITHMS = ['RS256']
-API_AUDIENCE = 'dev'
+API_AUDIENCE = 'coffeeapi'
 
 ## AuthError Exception
 '''
