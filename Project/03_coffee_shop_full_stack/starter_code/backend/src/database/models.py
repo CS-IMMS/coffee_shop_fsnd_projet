@@ -2,10 +2,12 @@ import os
 from sqlalchemy import Column, String, Integer
 from flask_sqlalchemy import SQLAlchemy
 import json
+from settings import database_path
+# database_filename = "database.db"
+# project_dir = os.path.dirname(os.path.abspath(__file__))
+# database_path = "sqlite:///{}".format(os.path.join(project_dir, database_filename))
 
-database_filename = "database.db"
-project_dir = os.path.dirname(os.path.abspath(__file__))
-database_path = "sqlite:///{}".format(os.path.join(project_dir, database_filename))
+
 
 db = SQLAlchemy()
 
@@ -34,13 +36,13 @@ def db_drop_and_create_all():
     db.drop_all()
     db.create_all()
     # add one demo row which is helping in POSTMAN test
-    drink = Drink(
-        title='water',
-        recipe='[{"name": "water", "color": "blue", "parts": 1}]'
-    )
+    # drink = Drink(
+    #     title='water',
+    #     recipe='[{"name": "water", "color": "blue", "parts": 1}]'
+    # )
 
 
-    drink.insert()
+    # drink.insert()
 # ROUTES
 
 '''
