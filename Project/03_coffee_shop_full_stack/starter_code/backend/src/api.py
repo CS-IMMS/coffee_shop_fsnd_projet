@@ -68,24 +68,25 @@ def get_drinks_detail(payload):
 '''
 @app.route('/drinks', methods=['POST'])
 @requires_auth('post:drinks')
-def create_drink(payload):
+def create_drinks(jwt):
     body = request.get_json()
 
+    drink_title = body['title']
+    drink_recipe = json.dumps(body['recipe'])
+
+    if drink_title is None or drink_recipe is None:
+        abort(422)
+
     try:
-
-        title = body['title']
-        recipe = body['recipe']
-
-        drink = Drink(title=title, recipe=recipe)
-        drink.insert()
+        new_drink = Drink(title=drink_title, recipe=drink_recipe)
+        new_drink.insert()
 
         return jsonify({
             'success': True,
-            'drinks': [drink.long()]
-        })
-
-    except Exception:
-        abort(422)
+            'drinks': [new_drink.long()]
+        }), 200
+    except:
+        abort(500)
 
 '''
 @TODO implement endpoint
@@ -133,7 +134,7 @@ def update_drinks(payload, id):
 '''
 @app.route('/drinks/<id>', methods=['DELETE'])
 @requires_auth('delete:drinks')
-def delete_drinks():
+def delete_drinks(jwt, id):
     drink = Drink.query.filter(Drink.id == id).one_or_none()
     if not drink:
         abort(400)

@@ -4,10 +4,10 @@ from operator import truediv
 from os import abort
 from flask import request, _request_ctx_stack
 from functools import wraps
-import jwt
+#import jwt
 from urllib.request import urlopen
 
-#from jose import jwt
+from jose import jwt
 
 AUTH0_DOMAIN = 'fsnd-imms.eu.auth0.com'
 ALGORITHMS = ['RS256']
@@ -76,15 +76,19 @@ def get_token_auth_header():
 '''
 
 def check_permissions(permission, payload):
-    if "permission" not in payload:
-        abort(400)
-    if 'permission' not in payload['permissions']:
+    if 'permissions' not in payload:
         raise AuthError({
-            "code": "unauthorized",
-            "description": "permission not found"
-        },401)
-    return True
+            'code': 'invalid_claims',
+            'description': 'Permissions not included in JWT.'
+        }, 400)
 
+    if permission not in payload['permissions']:
+        raise AuthError({
+            'code': 'unauthorized',
+            'description': 'Permission not found.'
+        }, 403)
+
+    return True
 '''
 @TODO implement verify_decode_jwt(token) method
     @INPUTS
