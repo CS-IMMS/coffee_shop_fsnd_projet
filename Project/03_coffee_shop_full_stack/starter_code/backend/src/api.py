@@ -19,7 +19,7 @@ CORS(app)
 !! NOTE THIS MUST BE UNCOMMENTED ON FIRST RUN
 !! Running this funciton will add one
 '''
-db_drop_and_create_all
+db_drop_and_create_all()
 
 # ROUTES
 '''
@@ -32,14 +32,13 @@ db_drop_and_create_all
 '''
 @app.route('/drinks', methods=['GET'])
 def get_drinks():
-    try:
+    if request.method == "GET":
         all_drinks = Drink.query.all()
+        drinks = [drink.short() for drink in all_drinks]
         return jsonify({
             'success': True,
-            'drinks': [drink.short() for drink in all_drinks]
+            'drinks': drinks
         }), 200
-    except:
-        abort(422)
 
 
 '''
@@ -175,7 +174,6 @@ def unprocessable(error):
                     "error": 404,
                     "message": "resource not found"
                     }), 404
-
 '''
 @app.errorhandler(404)
 def not_found(error):
